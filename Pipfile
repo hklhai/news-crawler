@@ -6,6 +6,8 @@ name = "pypi"
 [packages]
 "bs4" = "*"
 selenium = "*"
+lxml = "*"
+scrapy = "*"
 
 [dev-packages]
 
