@@ -3,10 +3,16 @@ import scrapy
 from scrapy import Request
 from pyquery import PyQuery as pq
 
+from tencent.items import TencentItem
+from utils.crawler_utils import format_url
+import sys
 
-class TencentspiderSpider(scrapy.Spider):
+sys.path.append("..")
+
+
+class tencentspiderSpider(scrapy.Spider):
     name = 'tencentSpider'
-    allowed_domains = ['news.qq.com']
+    allowed_domains = ['news.qq.com', "new.qq.com"]
     start_urls = ['http://news.qq.com/world_index.shtml']
 
     def parse(self, response):
@@ -22,17 +28,13 @@ class TencentspiderSpider(scrapy.Spider):
 
         for url in url_list:
             # print(url[0] + ":" + url[1])
-            yield Request(url=response.urljoin(url[1]), callback=self.parse_detail)
+            x = response.urljoin(url[1])
+            yield Request(url=x, callback=self.parse_detail)
 
         # 提取需要下载标签也交给scrapy下载
 
     def parse_detail(self, response):
-        from tencent.tencent.items import TencentItem
         article_item = TencentItem()
-        doc = pq(response.body)
-        print(doc("h1"))
-
-
-def format_url(url):
-    if url.startswith("//"):
-        return "http:" + url
+        html = response.body
+        doc = pq(html.decode("gbk"))
+        print(doc("h1").text())

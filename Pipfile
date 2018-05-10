@@ -11,6 +11,8 @@ scrapy = "*"
 pyquery = "*"
 requests = "*"
 pymysql = "*"
+wheel = "*"
+"pypiwin32" = "*"
 
 [dev-packages]
 
