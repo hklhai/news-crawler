@@ -7,7 +7,9 @@
 
 import scrapy
 import sys
+
 sys.path.append("..")
+
 
 class TencentItem(scrapy.Item):
     title = scrapy.Field()

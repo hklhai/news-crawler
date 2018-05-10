@@ -34,7 +34,11 @@ class tencentspiderSpider(scrapy.Spider):
         # 提取需要下载标签也交给scrapy下载
 
     def parse_detail(self, response):
+
         article_item = TencentItem()
-        html = response.body
-        doc = pq(html.decode("gbk"))
-        print(doc("h1").text())
+        html = response.body.decode("gbk")
+        doc = pq(html)
+        title = doc("h1").text()
+        url = response.url
+        content = doc("p").text()
+        print(url + ":" + title + ":" + content)
