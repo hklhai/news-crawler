@@ -3,7 +3,7 @@ import scrapy
 from scrapy import Request
 from pyquery import PyQuery as pq
 
-from tencent.items import TencentItem
+from items import TencentItem
 from utils.crawler_utils import format_url
 import sys
 
