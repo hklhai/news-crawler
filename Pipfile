@@ -8,6 +8,9 @@ name = "pypi"
 selenium = "*"
 lxml = "*"
 scrapy = "*"
+pyquery = "*"
+requests = "*"
+pymysql = "*"
 
 [dev-packages]
 
