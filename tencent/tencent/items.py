@@ -6,14 +6,13 @@
 # https://doc.scrapy.org/en/latest/topics/items.html
 
 import scrapy
-import sys
-
-sys.path.append("..")
-
 
 class TencentItem(scrapy.Item):
-    title = scrapy.Field()
-    create_date = scrapy.Field()
-    url = scrapy.Field()
+    """
+    持久化新闻信息
+    """
+    title = scrapy.Field()              # 新闻标题
+    create_date = scrapy.Field()        # 爬取时间
+    url = scrapy.Field()                # 爬取url
     url_object_id = scrapy.Field()
     content = scrapy.Field()
