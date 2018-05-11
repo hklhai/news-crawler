@@ -51,15 +51,15 @@ LOG_LEVEL = 'DEBUG'
 # Enable or disable spider middlewares
 # See https://doc.scrapy.org/en/latest/topics/spider-middleware.html
 SPIDER_MIDDLEWARES = {
-    'tencent.middlewares.TencentSpiderMiddleware': 543,
-    # 'tencent.middlewares.TencentDownloaderMiddleware': 500,
+    # 'tencent.middlewares.TencentSpiderMiddleware': 543,
+    'tencent.middlewares.TencentDownloaderMiddleware': 500,
 }
 
 # Enable or disable downloader middlewares
 # See https://doc.scrapy.org/en/latest/topics/downloader-middleware.html
-# DOWNLOADER_MIDDLEWARES = {
-#    'tencent.middlewares.TencentDownloaderMiddleware': 543,
-# }
+DOWNLOADER_MIDDLEWARES = {
+    'tencent.middlewares.TencentDownloaderMiddleware': 500,
+}
 
 # Enable or disable extensions
 # See https://doc.scrapy.org/en/latest/topics/extensions.html

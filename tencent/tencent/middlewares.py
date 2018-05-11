@@ -6,7 +6,12 @@
 # https://doc.scrapy.org/en/latest/topics/spider-middleware.html
 
 from scrapy import signals
+from scrapy.http import HtmlResponse
 from selenium import webdriver
+import random
+import time
+
+from tencent.utils.common import chrome_option
 
 
 class TencentSpiderMiddleware(object):
@@ -70,7 +75,12 @@ class TencentDownloaderMiddleware(object):
         return s
 
     def process_request(self, request, spider):
-        None
+        if spider.name == "tencentSpider":
+            browser = webdriver.Chrome(chrome_options=chrome_option())
+            browser.get(request.url)
+            sleep_time = random.uniform(2, 3)
+            time.sleep(sleep_time)
+            return HtmlResponse(url=request.url, body=browser.page_source, encoding="utf-8", request=request)
 
     def process_response(self, request, response, spider):
         # Called with the response returned from the downloader.

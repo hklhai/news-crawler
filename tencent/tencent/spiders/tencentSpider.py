@@ -24,10 +24,10 @@ class TencentSpiderSpider(scrapy.Spider):
         """
 
         # 解析列表页中所有文章的url，并交给scrapy下载后进行解析
-        doc = pq(response.body)
+        doc = pq(response.body.decode("utf-8"))
         url_list = []
 
-        url_list.append((doc("#subHot a div").text(), format_url(doc("#subHot a").attr.href)))
+        url_list.append((doc("#subHot").text(), format_url(doc("#subHot a").attr.href)))
         for ele in doc(".Q-tpWrap div em a"):
             url_list.append((ele.text, format_url(ele.attrib['href'])))
         for ele in doc(".Q-pList div em a"):
