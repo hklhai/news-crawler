@@ -4,6 +4,7 @@ import platform
 import random
 from selenium import webdriver
 
+
 def get_md5(url):
     if isinstance(url, str):
         url = url.encode()
@@ -118,3 +119,8 @@ def get_user_agent():
     ]
     user_agent = random.choice(user_agents)
     return user_agent
+
+
+def remove_special_label(s):
+    re = s.replace(u'\u3000', u'').replace('\r', '').replace('\n', '').replace('\t', '')
+    return re
