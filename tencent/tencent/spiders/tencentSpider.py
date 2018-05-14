@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
-import scrapy
-from scrapy import Request
-from pyquery import PyQuery as pq
-from tencent.items import TencentItem
-from tencent.utils.common import format_url, get_md5, get_now_time
 import logging
+
+import scrapy
+from bs4 import BeautifulSoup
+from scrapy import Request
+
+from tencent.items import TencentItem
+from tencent.utils.common import format_url, get_md5, get_now_time, remove_special_label
 
 
 class TencentSpiderSpider(scrapy.Spider):
@@ -24,9 +26,29 @@ class TencentSpiderSpider(scrapy.Spider):
         """
 
         # 解析列表页中所有文章的url，并交给scrapy下载后进行解析
-        doc = pq(response.body.decode("utf-8"))
+        html = response.body.decode("utf-8")
+        soup = BeautifulSoup(html, "html.parser")
         url_list = []
+        url_list.append(
+            (soup.select("#subHot a img")[0].attrs["alt"], format_url(soup.select("#subHot a")[0].attrs["href"])))
 
+        for ele in soup.select(".Q-tpWrap div em a"):
+            url_list.append((ele.text, format_url(ele.attrs['href'])))
+        for ele in soup.select(".Q-pList div em a"):
+            url_list.append((ele.text, format_url(ele.attrs['href'])))
+
+        for url in url_list:
+            # logging.log(logging.INFO, url[0] + ":" + url[1])
+            detail_url = url[1]
+            yield Request(url=response.urljoin(detail_url), callback=self.parse_detail)
+        # 提取其他需要下载的标签交给scrapy下载
+        # other_url = []
+        # other_url.append(doc("#navlinkSociety").attr("href"))
+        # for u in other_url:
+        #     yield Request(url=u, callback=self.parse)
+
+        """
+        # PqQuery Linux(Ubuntu 17)与Windows(win 10)解析不一致
         url_list.append((doc("#subHot").text(), format_url(doc("#subHot a").attr.href)))
         for ele in doc(".Q-tpWrap div em a"):
             url_list.append((ele.text, format_url(ele.attrib['href'])))
@@ -36,12 +58,12 @@ class TencentSpiderSpider(scrapy.Spider):
         for url in url_list:
             logging.log(logging.INFO, url[0] + ":" + url[1])
             yield Request(url=response.urljoin(url[1]), callback=self.parse_detail)
-
-        # 提取其他需要下载的标签交给scrapy下载
-        # other_url = []
-        # other_url.append(doc("#navlinkSociety").attr("href"))
-        # for u in other_url:
-        #     yield Request(url=u, callback=self.parse)
+        提取其他需要下载的标签交给scrapy下载
+        other_url = []
+        other_url.append(doc("#navlinkSociety").attr("href"))
+        for u in other_url:
+            yield Request(url=u, callback=self.parse)
+        """
 
     def parse_detail(self, response):
         """
@@ -51,15 +73,17 @@ class TencentSpiderSpider(scrapy.Spider):
         :return: 待持久化item
         """
         tencent_item = TencentItem()
-        doc = pq(response.body.decode("gbk"))
+        soup = BeautifulSoup(response.body.decode("utf-8"), "html.parser")
 
-        title = doc("h1").text()
+        title = soup.select("h1")[0].text
         create_date = get_now_time()
         url = response.url
         url_object_id = get_md5(url)
         content = ""
-        if len(doc("p").text()) > 0:
-            content = doc("p").text()
+        if len(soup.select("p")) > 0:
+            content_list = soup.select("p")
+            for element in content_list:
+                content = content + remove_special_label(element.text)
 
         tencent_item["title"] = title
         tencent_item["create_date"] = create_date
