@@ -56,6 +56,13 @@ def get_file_system_path():
     return path
 
 
+def get_chrome_executable_path():
+    linux_path = "/usr/bin/chromedriver"
+    windows_path = "E://Program//chromedriver.exe"
+    path = windows_path if get_system() == "Windows" else linux_path
+    return path
+
+
 def get_now_date():
     """
     返回形如2018-05-03的日期

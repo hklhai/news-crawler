@@ -11,7 +11,7 @@ from selenium import webdriver
 import random
 import time
 
-from tencent.utils.common import chrome_option
+from tencent.utils.common import chrome_option, get_chrome_executable_path
 
 
 class TencentSpiderMiddleware(object):
@@ -76,7 +76,7 @@ class TencentDownloaderMiddleware(object):
 
     def process_request(self, request, spider):
         if spider.name == "tencentSpider":
-            browser = webdriver.Chrome(chrome_options=chrome_option())
+            browser = webdriver.Chrome(executable_path=get_chrome_executable_path(), chrome_options=chrome_option())
             browser.get(request.url)
             sleep_time = random.uniform(2, 3)
             time.sleep(sleep_time)
