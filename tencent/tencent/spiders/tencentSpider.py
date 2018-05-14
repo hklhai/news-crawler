@@ -14,7 +14,8 @@ class TencentSpiderSpider(scrapy.Spider):
     腾讯新闻爬虫主要逻辑
     """
     name = 'tencentSpider'
-    allowed_domains = ['news.qq.com', "new.qq.com", "society.qq.com"]
+    allowed_domains = ['news.qq.com', "new.qq.com", "society.qq.com", "mil.qq.com",
+                       "tech.qq.com", "ent.qq.com", "finance.qq.com", "sports.qq.com"]
     start_urls = ['http://news.qq.com/world_index.shtml']
 
     def parse(self, response):
@@ -41,9 +42,15 @@ class TencentSpiderSpider(scrapy.Spider):
             # logging.log(logging.INFO, url[0] + ":" + url[1])
             detail_url = url[1]
             yield Request(url=response.urljoin(detail_url), callback=self.parse_detail)
+
         # 提取其他需要下载的标签交给scrapy下载
         # other_url = []
-        # other_url.append(doc("#navlinkSociety").attr("href"))
+        # other_url.append(doc("#navlinkSociety").attr("href"))  # 社会
+        # other_url.append(doc("#navlinkMil").attr("href"))  # 军事
+        # other_url.append("http://tech.qq.com/")  # 科技
+        # other_url.append("http://ent.qq.com/")  # 娱乐
+        # other_url.append("http://finance.qq.com/")  # 财经
+        # other_url.append("http://sports.qq.com/")  # 财经
         # for u in other_url:
         #     yield Request(url=u, callback=self.parse)
 
