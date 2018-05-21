@@ -4,9 +4,9 @@ import logging
 import scrapy
 from bs4 import BeautifulSoup
 from scrapy import Request
-
 from tencent.items import TencentItem
 from tencent.utils.common import format_url, get_md5, get_now_time, remove_special_label
+from tencent.utils.global_list import *
 
 
 class TencentSpiderSpider(scrapy.Spider):
@@ -14,9 +14,10 @@ class TencentSpiderSpider(scrapy.Spider):
     腾讯新闻爬虫主要逻辑
     """
     name = 'tencentSpider'
-    allowed_domains = ['news.qq.com', "new.qq.com", "society.qq.com", "mil.qq.com",
-                       "tech.qq.com", "ent.qq.com", "finance.qq.com", "sports.qq.com"]
-    start_urls = ['http://news.qq.com/world_index.shtml']
+    allowed_domains = [NEWS, NEW, SOCIETY, MIL, TECH, ENT, FINANCE, SPORTS]
+    start_urls = [URL_WORLD]
+
+    # start_urls = [URL_TECH]
 
     def parse(self, response):
         """
@@ -30,13 +31,19 @@ class TencentSpiderSpider(scrapy.Spider):
         html = response.body.decode("utf-8")
         soup = BeautifulSoup(html, "html.parser")
         url_list = []
-        url_list.append(
-            (soup.select("#subHot a img")[0].attrs["alt"], format_url(soup.select("#subHot a")[0].attrs["href"])))
+        # if response.urljoin
+        if response.url == URL_WORLD:
+            url_list.append(
+                (soup.select("#subHot a img")[0].attrs["alt"], format_url(soup.select("#subHot a")[0].attrs["href"])))
 
-        for ele in soup.select(".Q-tpWrap div em a"):
-            url_list.append((ele.text, format_url(ele.attrs['href'])))
-        for ele in soup.select(".Q-pList div em a"):
-            url_list.append((ele.text, format_url(ele.attrs['href'])))
+            for ele in soup.select(".Q-tpWrap div em a"):
+                url_list.append((ele.text, format_url(ele.attrs['href'])))
+            for ele in soup.select(".Q-pList div em a"):
+                url_list.append((ele.text, format_url(ele.attrs['href'])))
+
+        elif response.url == URL_TECH:
+            for e in soup.select(".Q-tpList div div h3 a"):
+                url_list.append((e.attrs["title"], e.attrs['href']))
 
         for url in url_list:
             # logging.log(logging.INFO, url[0] + ":" + url[1])
@@ -44,15 +51,15 @@ class TencentSpiderSpider(scrapy.Spider):
             yield Request(url=response.urljoin(detail_url), callback=self.parse_detail)
 
         # 提取其他需要下载的标签交给scrapy下载
-        # other_url = []
-        # other_url.append(doc("#navlinkSociety").attr("href"))  # 社会
-        # other_url.append(doc("#navlinkMil").attr("href"))  # 军事
-        # other_url.append("http://tech.qq.com/")  # 科技
+        other_url = []
+        other_url.append(soup.select("#navlinkSociety")[0].attrs["href"])  # 社会
+        other_url.append(soup.select("#navlinkMil")[0].attrs["href"])  # 军事
+        other_url.append("http://tech.qq.com/")  # 科技
         # other_url.append("http://ent.qq.com/")  # 娱乐
         # other_url.append("http://finance.qq.com/")  # 财经
         # other_url.append("http://sports.qq.com/")  # 财经
-        # for u in other_url:
-        #     yield Request(url=u, callback=self.parse)
+        for u in other_url:
+            yield Request(url=u, callback=self.parse)
 
         """
         # PqQuery Linux(Ubuntu 17)与Windows(win 10)解析不一致
@@ -88,9 +95,14 @@ class TencentSpiderSpider(scrapy.Spider):
         url_object_id = get_md5(url)
         content = ""
         if len(soup.select("p")) > 0:
-            content_list = soup.select("p")
-            for element in content_list:
-                content = content + remove_special_label(element.text)
+            if str(response.request.headers["Referer"], encoding='utf-8') == URL_WORLD:
+                content_list = soup.select("p")
+                for element in content_list:
+                    content = content + remove_special_label(element.text)
+            elif str(response.request.headers["Referer"], encoding='utf-8') == URL_TECH:
+                content_list = soup.select(".text")
+                for element in content_list:
+                    content = content + remove_special_label(element.text)
 
         tencent_item["title"] = title
         tencent_item["create_date"] = create_date
