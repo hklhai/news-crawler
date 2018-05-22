@@ -254,10 +254,10 @@
         },
         "pyopenssl": {
             "hashes": [
-                "sha256:07a2de1a54de07448732a81e38a55df7da109b2f47f599f8bb35b0cbec69d4bd",
-                "sha256:2c10cfba46a52c0b0950118981d61e72c1e5b1aac451ca1bc77de1a679456773"
+                "sha256:26ff56a6b5ecaf3a2a59f132681e2a80afcc76b4f902f612f518f92c2a1bf854",
+                "sha256:6488f1423b00f73b7ad5167885312bb0ce410d3312eb212393795b53c8caa580"
             ],
-            "version": "==17.5.0"
+            "version": "==18.0.0"
         },
         "pypiwin32": {
             "hashes": [
@@ -356,11 +356,11 @@
         },
         "wheel": {
             "hashes": [
-                "sha256:1ae8153bed701cb062913b72429bcf854ba824f973735427681882a688cb55ce",
-                "sha256:9cdc8ab2cc9c3c2e2727a4b67c22881dbb0e1c503d592992594c5e131c867107"
+                "sha256:0a2e54558a0628f2145d2fc822137e322412115173e8a2ddbe1c9024338ae83c",
+                "sha256:80044e51ec5bbf6c894ba0bc48d26a8c20a9ba629f4ca19ea26ecfcf87685f5f"
             ],
             "index": "pypi",
-            "version": "==0.31.0"
+            "version": "==0.31.1"
         },
         "zope.interface": {
             "hashes": [
