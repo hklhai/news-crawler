@@ -14,12 +14,16 @@ BOT_NAME = 'tencentComment'
 SPIDER_MODULES = ['tencentComment.spiders']
 NEWSPIDER_MODULE = 'tencentComment.spiders'
 
+LOG_LEVEL = 'DEBUG'
+
+# 解决中文乱码
+FEED_EXPORT_ENCODING = 'utf-8'
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'tencentComment (+http://www.yourdomain.com)'
 
 # Obey robots.txt rules
-ROBOTSTXT_OBEY = True
+ROBOTSTXT_OBEY = False
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
 #CONCURRENT_REQUESTS = 32

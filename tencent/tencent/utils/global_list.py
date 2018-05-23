@@ -13,3 +13,6 @@ SPORTS = "sports.qq.com"
 # URL
 URL_TECH = 'http://tech.qq.com/'
 URL_WORLD = 'http://news.qq.com/world_index.shtml'
+
+# 评论爬虫
+NO_COMMENT = "没有更多评论了"

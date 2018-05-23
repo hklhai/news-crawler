@@ -81,7 +81,18 @@ def chrome_option():
     global options
     options = webdriver.ChromeOptions()
     # 设置为无界面浏览器
-    options.set_headless()
+    options.headless = True
+    options.add_argument(get_user_agent())
+    return options
+
+
+def debug_option():
+    """
+    设置 chrome option
+    :return:  chrome option
+    """
+    global options
+    options = webdriver.ChromeOptions()
     options.add_argument(get_user_agent())
     return options
 

@@ -1,12 +1,14 @@
 # -*- coding: utf-8 -*-
 
-from scrapy import signals
-from scrapy.http import HtmlResponse
-from selenium import webdriver
 import random
 import time
 
-from tencent.utils.common import chrome_option, get_chrome_executable_path
+from scrapy import signals
+from scrapy.http import HtmlResponse
+from selenium import webdriver
+
+from tencent.utils.common import get_chrome_executable_path, debug_option
+from tencent.utils.global_list import NO_COMMENT
 
 
 class TencentcommentSpiderMiddleware(object):
@@ -71,10 +73,35 @@ class TencentcommentDownloaderMiddleware(object):
 
     def process_request(self, request, spider):
         if spider.name == "tencentComment":
-            browser = webdriver.Chrome(executable_path=get_chrome_executable_path(), chrome_options=chrome_option())
+            # todo
+            browser = webdriver.Chrome(executable_path=get_chrome_executable_path(), chrome_options=debug_option())
             browser.get(request.url)
             sleep_time = random.uniform(2, 3)
             time.sleep(sleep_time)
+
+            browser.execute_script("window.scrollTo(0,document.body.scrollHeight)")
+            browser.switch_to.frame("commentIframe")
+            time.sleep(1)
+
+            if browser.page_source.__contains__("comment-moreBtn"):
+                comment_element = browser.find_element_by_xpath("//*[contains(@class, 'comment-moreBtn')]")
+                comment_text = comment_element.text
+                comment_element.click()
+                time.sleep(1)
+
+                if (comment_element is not None):
+                    while True:
+                        if comment_text == NO_COMMENT:
+                            break
+                        else:
+                            if browser.page_source.__str__().__contains__("comment-noMore"):
+                                comment = browser.find_element_by_xpath("//*[contains(@class, 'comment-noMore')]")
+                            else:
+                                comment = browser.find_element_by_xpath("//*[contains(@class, 'comment-moreBtn')]")
+                            comment_text = comment.text
+                            time.sleep(1)
+                            comment.click()
+
             return HtmlResponse(url=request.url, body=browser.page_source, encoding="utf-8", request=request)
 
     def process_response(self, request, response, spider):
