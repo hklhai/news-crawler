@@ -38,20 +38,28 @@ class TencentcommentSpider(scrapy.Spider):
 
         if len(soup.select("title")) != 0:
             title = response.url
-            content_list = soup.select("#J_ShortComment .comment .comment-block div.comment-content")
-            reply_list = soup.select("#J_ShortComment .comment .comment-block .reply_block div.reply-content")
-            # 评论内容获取
-            for element in content_list:
-                content = content + element.text
-            # 回复内容获取
-            for element in reply_list:
-                content = content + element.text
+            if len(soup.select("#J_ShortComment .comment"))>0:
+                content_list = soup.select("#J_ShortComment .comment .comment-block .comment-content")
+                reply_list = soup.select("#J_ShortComment .comment .comment-block .reply-content")
+                # 评论内容获取
+                for element in content_list:
+                    if not element.text.endswith(("。", "！", "？")):
+                        content = content + element.text + "。"
+                    else:
+                        content = content + element.text
+
+                # 回复内容获取
+                for element in reply_list:
+                    element.span.decompose()
+                    if not element.text.endswith(("。", "！", "？")):
+                        content = content + element.text + "。"
+                    else:
+                        content = content + element.text
 
             tencent_item["title"] = title
             tencent_item["create_date"] = create_date
             tencent_item["url"] = url
             tencent_item["content"] = content
-            logging.log(logging.DEBUG, content)
 
             if (len(title) > 0 & (len(content) > 0)):
                 return tencent_item
