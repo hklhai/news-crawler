@@ -11,7 +11,7 @@ import json
 import pymysql
 from twisted.enterprise import adbapi
 
-from tencent.utils.common import get_now_date, get_comment_file_system_path
+from tencentComment.utils.common import get_now_date, get_comment_file_system_path
 
 
 class TencentcommentPipeline(object):

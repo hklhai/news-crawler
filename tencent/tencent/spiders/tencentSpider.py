@@ -4,8 +4,9 @@ import logging
 import scrapy
 from bs4 import BeautifulSoup
 from scrapy import Request
+
 from tencent.items import TencentItem
-from tencent.utils.common import format_url, get_md5, get_now_time, remove_special_label
+from tencent.utils.common import get_md5, get_now_time, remove_special_label
 from tencent.utils.global_list import *
 
 
@@ -15,9 +16,7 @@ class TencentSpiderSpider(scrapy.Spider):
     """
     name = 'tencentSpider'
     allowed_domains = [NEWS, NEW, SOCIETY, MIL, TECH, ENT, FINANCE, SPORTS]
-    start_urls = [URL_WORLD]
-
-    # start_urls = [URL_TECH]
+    start_urls = [START_URL]
 
     def parse(self, response):
         """
@@ -26,8 +25,27 @@ class TencentSpiderSpider(scrapy.Spider):
         :param response: 爬取返回信息
         :return: 待爬取内容页面，待爬取URL页面
         """
+        html = response.body.decode("utf-8")
+        soup = BeautifulSoup(html, "html.parser")
+        url_list = []
+        for e in soup.select(".detail h3 a"):
+            url_list.append(e["href"])
 
-        # 解析列表页中所有文章的url，并交给scrapy下载后进行解析
+        for u in url_list:
+            logging.log(logging.DEBUG, u)
+            if "video" in u:
+                continue
+            else:
+                yield Request(url=u, callback=self.parse_detail)
+
+        label = soup.select("#main-list li a")
+        for i in range(5, 12):
+            yield Request(url=START_URL + label[i]["href"], callback=self.parse)
+
+        """
+        2018年05月28日11:39:40 腾讯新闻改版
+        
+            # 解析列表页中所有文章的url，并交给scrapy下载后进行解析
         html = response.body.decode("utf-8")
         soup = BeautifulSoup(html, "html.parser")
         url_list = []
@@ -60,6 +78,7 @@ class TencentSpiderSpider(scrapy.Spider):
         # other_url.append("http://sports.qq.com/")  # 财经
         for u in other_url:
             yield Request(url=u, callback=self.parse)
+        """
 
         """
         # PqQuery Linux(Ubuntu 17)与Windows(win 10)解析不一致
@@ -95,14 +114,12 @@ class TencentSpiderSpider(scrapy.Spider):
         url_object_id = get_md5(url)
         content = ""
         if len(soup.select("p")) > 0:
-            if str(response.request.headers["Referer"], encoding='utf-8') == URL_WORLD:
-                content_list = soup.select("p")
-                for element in content_list:
-                    content = content + remove_special_label(element.text)
-            elif str(response.request.headers["Referer"], encoding='utf-8') == URL_TECH:
-                content_list = soup.select(".text")
-                for element in content_list:
-                    content = content + remove_special_label(element.text)
+            content_list = soup.select("p")
+            for element in content_list:
+                content = content + remove_special_label(element.text)
+            content_list = soup.select(".text")
+            for element in content_list:
+                content = content + remove_special_label(element.text)
 
         tencent_item["title"] = title
         tencent_item["create_date"] = create_date

@@ -5,15 +5,15 @@ import scrapy
 from bs4 import BeautifulSoup
 from scrapy import Request
 
-from tencent.utils.common import get_now_time
-from tencent.utils.global_list import *
+from tencentComment.utils.common import get_now_time, get_pre_week_url_list
+from tencentComment.utils.global_list import *
 from tencentComment.items import TencentCommentItem
 
 
 class TencentcommentSpider(scrapy.Spider):
     name = 'tencentComment'
     allowed_domains = [NEWS, NEW, SOCIETY, MIL, TECH, ENT, FINANCE, SPORTS]
-    start_urls = ["http://new.qq.com/omn/20180511/20180511A04WBW.html"]
+    start_urls = [START_URL]
 
     def parse(self, response):
         """
@@ -21,10 +21,10 @@ class TencentcommentSpider(scrapy.Spider):
         :param response:
         :return:
         """
-        url_list = ["http://new.qq.com/omn/20180511/20180511A04WBW.html",
-                    "http://new.qq.com/omn/20180510/20180510A1DSGA.html"]
+        # url_list = ["http://new.qq.com/omn/20180511/20180511A04WBW.html",
+        #             "http://new.qq.com/omn/20180510/20180510A1DSGA.html"]
         # 过滤
-        # url_list = get_pre_week_url_list()
+        url_list = get_pre_week_url_list()
         for url in url_list:
             yield Request(url=url, callback=self.parse_detail)
 
@@ -38,7 +38,7 @@ class TencentcommentSpider(scrapy.Spider):
 
         if len(soup.select("title")) != 0:
             title = response.url
-            if len(soup.select("#J_ShortComment .comment"))>0:
+            if len(soup.select("#J_ShortComment .comment")) > 0:
                 content_list = soup.select("#J_ShortComment .comment .comment-block .comment-content")
                 reply_list = soup.select("#J_ShortComment .comment .comment-block .reply-content")
                 # 评论内容获取

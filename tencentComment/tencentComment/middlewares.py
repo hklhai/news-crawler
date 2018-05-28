@@ -7,8 +7,8 @@ from scrapy import signals
 from scrapy.http import HtmlResponse
 from selenium import webdriver
 
-from tencent.utils.common import get_chrome_executable_path, debug_option
-from tencent.utils.global_list import NO_COMMENT
+from tencentComment.utils.common import get_chrome_executable_path, debug_option
+from tencentComment.utils.global_list import NO_COMMENT
 
 
 class TencentcommentSpiderMiddleware(object):

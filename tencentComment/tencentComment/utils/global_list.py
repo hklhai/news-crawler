@@ -12,10 +12,8 @@ SPORTS = "sports.qq.com"
 
 # URL
 URL_TECH = 'http://tech.qq.com/'
-URL_WORLD = 'http://new.qq.com/ch/world/'
+URL_WORLD = 'http://news.qq.com/world_index.shtml'
 
 # 评论爬虫
 NO_COMMENT = "没有更多评论了"
-START_URL ="http://new.qq.com"
-
-
+START_URL ="http://new.qq.com/omn/20180511/20180511A04WBW.html"
