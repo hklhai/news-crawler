@@ -1,4 +1,5 @@
 .idea/
 checkpoint
 poetry.*
-tencentComment/ai.py
+tencentComment/x.py
+tencentComment/y.py

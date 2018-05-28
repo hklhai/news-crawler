@@ -1,9 +1,12 @@
 # -*- coding: utf-8 -*-
 
+import datetime
 import hashlib
-import time
+import json
 import platform
 import random
+import time
+
 from selenium import webdriver
 
 
@@ -54,6 +57,17 @@ def get_file_system_path():
     """
     linux_path = "/home/hadoop/news/"
     windows_path = "E://news//"
+    path = windows_path if get_system() == "Windows" else linux_path
+    return path
+
+
+def get_comment_file_system_path():
+    """
+    获取评论爬虫持久化路径
+    :return: 当前系统路径
+    """
+    linux_path = "/home/hadoop/comment/"
+    windows_path = "E://comment//"
     path = windows_path if get_system() == "Windows" else linux_path
     return path
 
@@ -142,5 +156,32 @@ def get_user_agent():
 
 
 def remove_special_label(s):
+    """
+    去除html中的不必要字符
+    :param s: html网页
+    :return: 处理后的html网页
+    """
     re = s.replace(u'\u3000', u'').replace('\r', '').replace('\n', '').replace('\t', '')
     return re
+
+
+def get_pre_week():
+    """
+    获取上周日期
+    :return:  字符串格式日期
+    """
+    today = datetime.date.today()
+    one_week = datetime.timedelta(days=7)
+    pre_week = today - one_week
+    return pre_week.__str__()
+
+
+def get_pre_week_url_list():
+    """
+    读取文件并解析为列表
+    :return: url列表
+    """
+    pre_week = get_pre_week()
+    json_file = get_file_system_path() + pre_week
+    dic_list = [json.loads(line)["url"] for line in open(json_file)]
+    return dic_list

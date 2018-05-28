@@ -7,14 +7,17 @@
 
 import codecs
 import json
+
 import pymysql
 from twisted.enterprise import adbapi
 
-from tencentComment.utils.common import get_file_system_path, get_now_date
+from tencent.utils.common import get_now_date, get_comment_file_system_path
+
 
 class TencentcommentPipeline(object):
     def process_item(self, item, spider):
         return item
+
 
 class JsonWithEncodingPipeline(object):
     """
@@ -22,7 +25,7 @@ class JsonWithEncodingPipeline(object):
     """
 
     def __init__(self):
-        self.file = codecs.open(get_file_system_path() + get_now_date(), 'w', encoding="utf-8")
+        self.file = codecs.open(get_comment_file_system_path() + get_now_date(), 'w', encoding="utf-8")
 
     def process_item(self, item, spider):
         lines = json.dumps(dict(item), ensure_ascii=False) + "\n"
@@ -50,7 +53,7 @@ class MysqlPipeline(object):
         '''
 
         self.cursor.execute(insert_sql, (
-            item["title"], item["create_date"], item["url"],item["content"]))
+            item["title"], item["create_date"], item["url"], item["content"]))
         self.conn.commit()
 
 
