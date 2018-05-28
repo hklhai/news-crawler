@@ -78,7 +78,7 @@ class TencentcommentDownloaderMiddleware(object):
             browser.get(request.url)
             sleep_time = random.uniform(2, 3)
             time.sleep(sleep_time)
-            # title = browser.find_elements_by_tag_name("h1")[0].text
+            title = browser.find_elements_by_tag_name("h1")[0].text
 
             browser.execute_script("window.scrollTo(0,document.body.scrollHeight)")
             browser.switch_to.frame("commentIframe")
@@ -103,7 +103,7 @@ class TencentcommentDownloaderMiddleware(object):
                             time.sleep(2)
                             comment.click()
                             time.sleep(5)
-        return HtmlResponse(url=request.url, body=browser.page_source, encoding="utf-8", request=request)
+        return HtmlResponse(url=title, body=browser.page_source, encoding="utf-8", request=request)
 
     def process_response(self, request, response, spider):
         # Called with the response returned from the downloader.
