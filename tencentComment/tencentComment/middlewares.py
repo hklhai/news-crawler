@@ -7,7 +7,7 @@ from scrapy import signals
 from scrapy.http import HtmlResponse
 from selenium import webdriver
 
-from tencentComment.utils.common import get_chrome_executable_path, debug_option
+from tencentComment.utils.common import get_chrome_executable_path, chrome_option
 from tencentComment.utils.global_list import NO_COMMENT
 
 
@@ -73,8 +73,7 @@ class TencentcommentDownloaderMiddleware(object):
 
     def process_request(self, request, spider):
         if spider.name == "tencentComment":
-            # todo
-            browser = webdriver.Chrome(executable_path=get_chrome_executable_path(), chrome_options=debug_option())
+            browser = webdriver.Chrome(executable_path=get_chrome_executable_path(), chrome_options=chrome_option())
             browser.get(request.url)
             sleep_time = random.uniform(2, 3)
             time.sleep(sleep_time)
