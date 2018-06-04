@@ -16,6 +16,11 @@ URL_WORLD = 'http://new.qq.com/ch/world/'
 
 # 评论爬虫
 NO_COMMENT = "没有更多评论了"
-START_URL ="http://new.qq.com"
+START_URL = "http://new.qq.com"
 
+# ElasticSearch
+HOST_PORT = 'spark3:9200'
 
+# ElasticSearch index
+NEWS_INDEX = "news_data"
+NEWS_TYPE = "news"

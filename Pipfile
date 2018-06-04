@@ -13,6 +13,7 @@ requests = "*"
 pymysql = "*"
 wheel = "*"
 "pypiwin32" = "*"
+elasticsearch = "*"
 
 [dev-packages]
 

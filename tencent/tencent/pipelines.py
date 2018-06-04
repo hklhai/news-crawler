@@ -2,9 +2,11 @@
 import codecs
 import json
 import pymysql
+from elasticsearch import Elasticsearch
 from twisted.enterprise import adbapi
 
 from tencent.utils.common import get_file_system_path, get_now_date
+from tencent.utils.global_list import NEWS_INDEX, NEWS_TYPE, HOST_PORT
 
 
 class TencentPipeline(object):
@@ -14,15 +16,19 @@ class TencentPipeline(object):
 
 class JsonWithEncodingPipeline(object):
     """
-    返回json数据到文件
+    1. 保存json数据到文件
+    2. 持久化至ElasticSearch
     """
 
     def __init__(self):
         self.file = codecs.open(get_file_system_path() + get_now_date(), 'w', encoding="utf-8")
+        self.es = Elasticsearch([HOST_PORT])
 
     def process_item(self, item, spider):
         lines = json.dumps(dict(item), ensure_ascii=False) + "\n"
         self.file.write(lines)
+        body = json.dumps(dict(item), ensure_ascii=False)
+        self.es.index(index=NEWS_INDEX, doc_type=NEWS_TYPE, body=body, id=None)
         return item
 
     def spider_closed(self, spider):
@@ -39,6 +45,7 @@ class MysqlPipeline(object):
         self.conn = pymysql.connect(host='spark2', port=3306, user='root', passwd='mysql', db='article_spider',
                                     use_unicode=True, charset="utf8")
         self.cursor = self.conn.cursor()
+
 
     def process_item(self, item, spider):
         insert_sql = '''

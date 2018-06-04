@@ -14,7 +14,7 @@ BOT_NAME = 'tencentComment'
 SPIDER_MODULES = ['tencentComment.spiders']
 NEWSPIDER_MODULE = 'tencentComment.spiders'
 
-LOG_LEVEL = 'DEBUG'
+LOG_LEVEL = 'ERROR'
 
 # 解决中文乱码
 FEED_EXPORT_ENCODING = 'utf-8'
