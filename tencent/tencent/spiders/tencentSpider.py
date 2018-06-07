@@ -17,6 +17,7 @@ class TencentSpiderSpider(scrapy.Spider):
     name = 'tencentSpider'
     allowed_domains = [NEWS, NEW, SOCIETY, MIL, TECH, ENT, FINANCE, SPORTS]
     start_urls = [START_URL]
+    # start_urls = ["http://new.qq.com/omn/20180606/20180606V0CI9K.html"]
 
     def parse(self, response):
         """
@@ -113,13 +114,17 @@ class TencentSpiderSpider(scrapy.Spider):
         url = response.url
         url_object_id = get_md5(url)
         content = ""
-        if len(soup.select("p")) > 0:
-            content_list = soup.select("p")
-            for element in content_list:
-                content = content + remove_special_label(element.text)
-            content_list = soup.select(".text")
-            for element in content_list:
-                content = content + remove_special_label(element.text)
+
+        if soup.select(".videoPlayer") is None:
+            if len(soup.select("p")) > 0:
+                content_list = soup.select("p")
+                for element in content_list:
+                    content = content + remove_special_label(element.text)
+                content_list = soup.select(".text")
+                for element in content_list:
+                    content = content + remove_special_label(element.text)
+        else:
+            return None
 
         tencent_item["title"] = title
         tencent_item["create_date"] = create_date
