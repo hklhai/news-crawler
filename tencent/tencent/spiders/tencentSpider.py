@@ -17,6 +17,7 @@ class TencentSpiderSpider(scrapy.Spider):
     name = 'tencentSpider'
     allowed_domains = [NEWS, NEW, SOCIETY, MIL, TECH, ENT, FINANCE, SPORTS]
     start_urls = [START_URL]
+
     # start_urls = ["http://new.qq.com/omn/20180606/20180606V0CI9K.html"]
 
     def parse(self, response):
@@ -43,62 +44,6 @@ class TencentSpiderSpider(scrapy.Spider):
         for i in range(5, 12):
             yield Request(url=START_URL + label[i]["href"], callback=self.parse)
 
-        """
-        2018年05月28日11:39:40 腾讯新闻改版
-        
-            # 解析列表页中所有文章的url，并交给scrapy下载后进行解析
-        html = response.body.decode("utf-8")
-        soup = BeautifulSoup(html, "html.parser")
-        url_list = []
-        # if response.urljoin
-        if response.url == URL_WORLD:
-            url_list.append(
-                (soup.select("#subHot a img")[0].attrs["alt"], format_url(soup.select("#subHot a")[0].attrs["href"])))
-
-            for ele in soup.select(".Q-tpWrap div em a"):
-                url_list.append((ele.text, format_url(ele.attrs['href'])))
-            for ele in soup.select(".Q-pList div em a"):
-                url_list.append((ele.text, format_url(ele.attrs['href'])))
-
-        elif response.url == URL_TECH:
-            for e in soup.select(".Q-tpList div div h3 a"):
-                url_list.append((e.attrs["title"], e.attrs['href']))
-
-        for url in url_list:
-            # logging.log(logging.INFO, url[0] + ":" + url[1])
-            detail_url = url[1]
-            yield Request(url=response.urljoin(detail_url), callback=self.parse_detail)
-
-        # 提取其他需要下载的标签交给scrapy下载
-        other_url = []
-        other_url.append(soup.select("#navlinkSociety")[0].attrs["href"])  # 社会
-        other_url.append(soup.select("#navlinkMil")[0].attrs["href"])  # 军事
-        other_url.append("http://tech.qq.com/")  # 科技
-        # other_url.append("http://ent.qq.com/")  # 娱乐
-        # other_url.append("http://finance.qq.com/")  # 财经
-        # other_url.append("http://sports.qq.com/")  # 财经
-        for u in other_url:
-            yield Request(url=u, callback=self.parse)
-        """
-
-        """
-        # PqQuery Linux(Ubuntu 17)与Windows(win 10)解析不一致
-        url_list.append((doc("#subHot").text(), format_url(doc("#subHot a").attr.href)))
-        for ele in doc(".Q-tpWrap div em a"):
-            url_list.append((ele.text, format_url(ele.attrib['href'])))
-        for ele in doc(".Q-pList div em a"):
-            url_list.append((ele.text, format_url(ele.attrib['href'])))
-
-        for url in url_list:
-            logging.log(logging.INFO, url[0] + ":" + url[1])
-            yield Request(url=response.urljoin(url[1]), callback=self.parse_detail)
-        提取其他需要下载的标签交给scrapy下载
-        other_url = []
-        other_url.append(doc("#navlinkSociety").attr("href"))
-        for u in other_url:
-            yield Request(url=u, callback=self.parse)
-        """
-
     def parse_detail(self, response):
         """
         处理需要爬取页面的
@@ -115,7 +60,7 @@ class TencentSpiderSpider(scrapy.Spider):
         url_object_id = get_md5(url)
         content = ""
 
-        if soup.select(".videoPlayer") is None:
+        if len(soup.select(".videoPlayer")) == 0:
             if len(soup.select("p")) > 0:
                 content_list = soup.select("p")
                 for element in content_list:
@@ -123,8 +68,6 @@ class TencentSpiderSpider(scrapy.Spider):
                 content_list = soup.select(".text")
                 for element in content_list:
                     content = content + remove_special_label(element.text)
-        else:
-            return None
 
         tencent_item["title"] = title
         tencent_item["create_date"] = create_date
