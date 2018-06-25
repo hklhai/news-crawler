@@ -6,7 +6,7 @@ setup(
     name="CPCC",
     version="0.1",
     packages=['reminder'],
-    scripts=['cpcc.py'],
+    scripts=['cpccAndUnicom.py'],
 
     # Project uses reStructuredText, so ensure that the docutils get
     # installed or upgraded on the target machine

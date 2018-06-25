@@ -5,4 +5,5 @@ reminder/build
 reminder/dist
 *.spec
 *.egg-info
-/dist
+/dist/*
+/build/*
