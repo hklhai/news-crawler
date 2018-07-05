@@ -82,7 +82,7 @@ def get_chrome_executable_path():
 def get_now_date():
     """
     返回形如2018-05-03的日期
-    :return: 返回当前时间
+    :return: 返回当前日期
     """
     return time.strftime('%Y-%m-%d', time.localtime(time.time()))
 
