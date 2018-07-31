@@ -5,9 +5,9 @@ import scrapy
 from bs4 import BeautifulSoup
 from scrapy import Request
 
+from tencentComment.items import TencentCommentItem
 from tencentComment.utils.common import get_now_time, get_pre_week_url_list
 from tencentComment.utils.global_list import *
-from tencentComment.items import TencentCommentItem
 
 
 class TencentcommentSpider(scrapy.Spider):
@@ -33,7 +33,6 @@ class TencentcommentSpider(scrapy.Spider):
         soup = BeautifulSoup(response.body.decode("utf-8"), "html.parser")
 
         create_date = get_now_time()
-        url = response.url
         content = ""
 
         if len(soup.select("title")) != 0:
@@ -43,26 +42,19 @@ class TencentcommentSpider(scrapy.Spider):
                 reply_list = soup.select("#J_ShortComment .comment .comment-block .reply-content")
                 # 评论内容获取
                 for element in content_list:
-                    if not element.text.endswith(("。", "！", "？")):
-                        content = content + element.text + "。"
-                    else:
-                        content = content + element.text
+                    content = content + element.text + "|"
 
                 # 回复内容获取
                 for element in reply_list:
                     element.span.decompose()
-                    if not element.text.endswith(("。", "！", "？")):
-                        content = content + element.text + "。"
-                    else:
-                        content = content + element.text
+                    content = content + element.text + "|"
 
             tencent_item["title"] = title
             tencent_item["create_date"] = create_date
-            tencent_item["url"] = url
             tencent_item["content"] = content
 
             if (len(title) > 0 & (len(content) > 0)):
                 return tencent_item
             else:
-                logging.log(logging.ERROR, url)
+                logging.log(logging.ERROR)
                 return None

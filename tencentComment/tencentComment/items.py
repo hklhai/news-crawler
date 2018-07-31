@@ -10,6 +10,5 @@ class TencentCommentItem(scrapy.Item):
     """
     title = scrapy.Field()          # 新闻标题
     create_date = scrapy.Field()    # 爬取时间
-    url = scrapy.Field()            # 爬取url
     content = scrapy.Field()        # 新闻评论内容
 
