@@ -28,7 +28,7 @@ class JsonWithEncodingPipeline(object):
     """
 
     def __init__(self):
-        self.file = codecs.open(get_comment_file_system_path() + get_now_date(), 'w', encoding="utf-8")
+        # self.file = codecs.open(get_comment_file_system_path() + get_now_date(), 'w', encoding="utf-8")
         self.es = Elasticsearch([HOST_PORT])
 
     def process_item(self, item, spider):
