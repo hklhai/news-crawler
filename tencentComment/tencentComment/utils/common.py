@@ -2,7 +2,6 @@
 
 import datetime
 import hashlib
-import json
 import platform
 import random
 import time
@@ -210,12 +209,10 @@ def get_pre_week_url_list():
     # dic_list = [json.loads(line)["url"] for line in open(json_file)]
     # return dic_list
 
-
     # 2018-08-13爬取到2018-07-29
 
+    # 爬取2018-07-30至2018-08-12数据
     l = get_pre_date_list("2018-07-30", "2018-08-13")
     for i in range(len(l)):
         print(l[i])
     return l
-
-
