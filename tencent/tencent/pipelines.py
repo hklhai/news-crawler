@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import codecs
 import json
+
 import pymysql
 from elasticsearch import Elasticsearch
 from twisted.enterprise import adbapi
@@ -27,9 +28,18 @@ class JsonWithEncodingPipeline(object):
     def process_item(self, item, spider):
         lines = json.dumps(dict(item), ensure_ascii=False) + "\n"
         self.file.write(lines)
-        body = json.dumps(dict(item), ensure_ascii=False)
-        self.es.index(index=NEWS_INDEX, doc_type=NEWS_TYPE, body=body, id=None)
-        return item
+
+        item_dict = dict(item)
+
+        # 查询是否存在该title
+        query_total = {'query': {'match_phrase': {'title': item_dict['title']}}}
+        total = self.es.count(index=NEWS_INDEX, doc_type=NEWS_TYPE, body=query_total)
+        if total['count'] == 0:
+            body = json.dumps(dict(item), ensure_ascii=False)
+            self.es.index(index=NEWS_INDEX, doc_type=NEWS_TYPE, body=body, id=None)
+            return item
+        else:
+            return None
 
     def spider_closed(self, spider):
         self.file.close()
@@ -45,7 +55,6 @@ class MysqlPipeline(object):
         self.conn = pymysql.connect(host='spark2', port=3306, user='root', passwd='mysql', db='article_spider',
                                     use_unicode=True, charset="utf8")
         self.cursor = self.conn.cursor()
-
 
     def process_item(self, item, spider):
         insert_sql = '''
