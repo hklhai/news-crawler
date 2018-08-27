@@ -2,6 +2,7 @@
 
 from scrapy import cmdline
 
-name = 'cnbianju'
+# name = 'cnbianju'
+name = 'cnbianjuTest'
 cmd = 'scrapy crawl {0}'.format(name)
 cmdline.execute(cmd.split())
