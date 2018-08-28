@@ -27,7 +27,6 @@ class CnbianjuSpider(scrapy.Spider):
         print(title)
         category = soup.findAll("table")[5].findAll('table')[0].findAll('font')[0].text
         print(category)
-        table = soup.findAll("table")[5].findAll('table')[5]
         a_list = soup.findAll("table")[5].findAll('table')[5].select('a')
         total_page = soup.findAll("table")[5].findAll('table')[5].select('a')[len(a_list) - 4].text[1:2]
 

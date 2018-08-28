@@ -6,6 +6,7 @@ import json
 import platform
 import random
 import time
+from urllib import parse
 
 from selenium import webdriver
 
@@ -20,6 +21,12 @@ SCRIPT_INDEX = "script_data"
 SCRIPT_TYPE = "script"
 
 SPIDER_NAME = "cnbianjuTest"
+
+
+def get_url_product_id(url):
+    urla = url.split("?")
+    res = parse.parse_qs(urla[1])
+    return res['id'][0]
 
 
 def get_md5(url):
