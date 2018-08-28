@@ -210,8 +210,8 @@ def get_pre_week_url_list():
     # dic_list = [json.loads(line)["url"] for line in open(json_file)]
     # return dic_list
 
-    # 爬取2018-07-30至2018-08-20数据
-    date_list = get_pre_date_list("2018-07-30", "2018-08-20")
+    # 爬取2018-08-20至2018-08-27数据
+    date_list = get_pre_date_list("2018-08-20", "2018-08-28")
     for i in range(len(date_list)):
         print(date_list[i])
     dic_list = []
