@@ -9,6 +9,18 @@ import time
 
 from selenium import webdriver
 
+YOUTH_PAGE = "https://www.bianju.me/telescript/?ClassName2=%C7%E0%B4%BA"
+PAGE_URL_START = "https://www.bianju.me/telescript/?Page="
+PAGE_URL_END = "&ClassName=%B5%E7%CA%D3%BE%E7%BE%E7%B1%BE&ClassName2=%C7%E0%B4%BA&byType="
+PRODUCT_URL_START = "http://www.bianju.me/"
+PRODUCT_URL_END = "&CType=content"
+
+# ElasticSearch index
+SCRIPT_INDEX = "script_data"
+SCRIPT_TYPE = "script"
+
+SPIDER_NAME = "cnbianjuTest"
+
 
 def get_md5(url):
     if isinstance(url, str):
@@ -109,6 +121,16 @@ def debug_option():
     options = webdriver.ChromeOptions()
     options.add_argument(get_user_agent())
     return options
+
+
+def get_user_password():
+    """"
+    随机获取用户名、密码
+    """
+    user_passwords = {"hkhai": "hk85151918", "jeesite": "123456", "amy26": "13579", "xxxx11": "xxxx11"}
+    user = random.choice(list(user_passwords))
+    user_tuple = (user, user_passwords[user])
+    return user_tuple
 
 
 def get_user_agent():

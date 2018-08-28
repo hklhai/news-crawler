@@ -5,7 +5,14 @@
 # See documentation in:
 # https://doc.scrapy.org/en/latest/topics/spider-middleware.html
 
+import time
+
 from scrapy import signals
+from scrapy.http import HtmlResponse
+from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
+
+from bianju.common import get_user_password, get_chrome_executable_path, debug_option
 
 
 class BianjuSpiderMiddleware(object):
@@ -69,16 +76,21 @@ class BianjuDownloaderMiddleware(object):
         return s
 
     def process_request(self, request, spider):
-        # Called for each request that goes through the downloader
-        # middleware.
+        if spider.name == "cnbianjuTest" and request.url.startswith("https://www.bianju.me/Art_list.asp?id="):
+            browser = webdriver.Chrome(executable_path=get_chrome_executable_path(), chrome_options=debug_option())
+            browser.get("https://www.bianju.me/user_login.asp")
+            time.sleep(1)
+            # 随机获取用户名密码
+            user_tuple = get_user_password()
+            browser.find_element_by_xpath("//*[@id=\"username\"]").send_keys(user_tuple[0])
+            browser.find_element_by_xpath("//*[@id=\"password\"]").send_keys(user_tuple[1])
+            browser.find_element_by_xpath('//input[@value="编剧"]').send_keys(Keys.SPACE)
+            browser.find_element_by_xpath("//*[@name=\"Submit\"]").click()
 
-        # Must either:
-        # - return None: continue processing this request
-        # - or return a Response object
-        # - or return a Request object
-        # - or raise IgnoreRequest: process_exception() methods of
-        #   installed downloader middleware will be called
-        return None
+            browser.get(request.url)
+            # 先获取页数 for循环取出
+
+            return HtmlResponse(url=request.url, body=browser.page_source, encoding="utf-8", request=request, text="")
 
     def process_response(self, request, response, spider):
         # Called with the response returned from the downloader.
