@@ -16,17 +16,29 @@ PAGE_URL_END = "&ClassName=%B5%E7%CA%D3%BE%E7%BE%E7%B1%BE&ClassName2=%C7%E0%B4%B
 PRODUCT_URL_START = "http://www.bianju.me/"
 PRODUCT_URL_END = "&CType=content"
 
+SPIDER_NAME = "cnbianjuTest"
+
+LOGIN_PAGE = "https://www.bianju.me/user_login.asp"
+
+# ElasticSearch
+# HOST_PORT = 'spark3:9200'
+HOST_PORT = 'ubuntu3:9200'
+
 # ElasticSearch index
 SCRIPT_INDEX = "script_data"
 SCRIPT_TYPE = "script"
-
-SPIDER_NAME = "cnbianjuTest"
 
 
 def get_url_product_id(url):
     urla = url.split("?")
     res = parse.parse_qs(urla[1])
     return res['id'][0]
+
+
+def get_url_product_page(url):
+    urla = url.split("?")
+    res = parse.parse_qs(urla[1])
+    return res['page'][0]
 
 
 def get_md5(url):
@@ -113,6 +125,13 @@ def chrome_option():
     """
     global options
     options = webdriver.ChromeOptions()
+    prefs = {
+        'profile.default_content_setting_values': {
+            'images': 2
+        }
+    }
+    options.add_experimental_option('prefs', prefs)
+
     # 设置为无界面浏览器
     options.set_headless()
     options.add_argument(get_user_agent())
@@ -126,6 +145,12 @@ def debug_option():
     """
     global options
     options = webdriver.ChromeOptions()
+    prefs = {
+        'profile.default_content_setting_values': {
+            'images': 2
+        }
+    }
+    options.add_experimental_option('prefs', prefs)
     options.add_argument(get_user_agent())
     return options
 

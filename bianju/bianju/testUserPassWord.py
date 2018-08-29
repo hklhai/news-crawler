@@ -8,5 +8,9 @@ from bianju.common import get_user_password, get_url_product_id
 tuple = get_user_password()
 print(tuple[0], tuple[1])
 
-url = "https://www.bianju.me/Art_list.asp?ID=17167&page=6&CType=content"
+url = "https://www.bianju.me/Art_list.asp?id=17167&page=6&CType=content"
 print(get_url_product_id(url))
+
+a = 7
+for i in range(a-1, -1, -1):
+    print(i)

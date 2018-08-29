@@ -70,7 +70,7 @@ class BianjuDownloaderMiddleware(object):
         return s
 
     def process_request(self, request, spider):
-        if spider.name == "cnbianjuTest" and request.url.startswith("https://www.bianju.me/Art_list.asp?id="):
+        if spider.name == "cnbianju" and request.url.startswith("https://www.bianju.me/Art_list.asp?id="):
             return HtmlResponse(url=request.url, body="", encoding="utf-8", request=request)
 
     def process_response(self, request, response, spider):

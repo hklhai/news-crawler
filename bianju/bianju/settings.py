@@ -18,7 +18,10 @@ NEWSPIDER_MODULE = 'bianju.spiders'
 # USER_AGENT = 'bianju (+http://www.yourdomain.com)'
 
 # Obey robots.txt rules
-ROBOTSTXT_OBEY = True
+ROBOTSTXT_OBEY = False
+
+# Log output level setting
+LOG_LEVEL = 'ERROR'
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
 # CONCURRENT_REQUESTS = 32
@@ -52,7 +55,7 @@ ROBOTSTXT_OBEY = True
 # Enable or disable downloader middlewares
 # See https://doc.scrapy.org/en/latest/topics/downloader-middleware.html
 DOWNLOADER_MIDDLEWARES = {
-   'bianju.middlewares.BianjuDownloaderMiddleware': 300,
+    'bianju.middlewares.BianjuDownloaderMiddleware': 300,
 }
 
 # Enable or disable extensions
@@ -63,9 +66,9 @@ DOWNLOADER_MIDDLEWARES = {
 
 # Configure item pipelines
 # See https://doc.scrapy.org/en/latest/topics/item-pipeline.html
-# ITEM_PIPELINES = {
-#    'bianju.pipelines.BianjuPipeline': 300,
-# }
+ITEM_PIPELINES = {
+    'bianju.pipelines.JsonWithEncodingPipeline': 300,
+}
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://doc.scrapy.org/en/latest/topics/autothrottle.html

@@ -17,4 +17,8 @@ class BianjuItem(scrapy.Item):
     url = scrapy.Field()                # 爬取url
     url_object_id = scrapy.Field()      # url标识
     category = scrapy.Field()           # 类别
+    word_count = scrapy.Field()         # 字数
+    submission_time = scrapy.Field()    # 投稿时间
+    modify_time = scrapy.Field()        # 修改时间
+    read_times = scrapy.Field()         # 阅读数
     content = scrapy.Field()            # 新闻内容
