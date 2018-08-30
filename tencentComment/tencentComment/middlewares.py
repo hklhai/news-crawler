@@ -89,15 +89,34 @@ class TencentcommentDownloaderMiddleware(object):
                 comment_element.click()
                 time.sleep(2)
 
-                if (comment_element is not None):
+                if comment_element is not None:
                     while True:
                         if comment_text == NO_COMMENT:
                             break
                         else:
+                            # reply-allBtn J_ReplyMoreBtn  查看全部回复   J_ReplyMoreBtn reply-moreBtn
+                            while browser.page_source.__str__().__contains__("reply-allBtn J_ReplyMoreBtn"):
+                                reply = browser.find_element_by_xpath(
+                                    "//*[contains(@class, 'reply-allBtn J_ReplyMoreBtn')]")
+                                reply.click()
+                                time.sleep(1)
+
+                            # J_ReplyMoreBtn reply-moreBtn 查看更多回复
+                            while browser.page_source.__str__().__contains__("J_ReplyMoreBtn reply-moreBtn"):
+                                try:
+                                    reply_more_btn = browser.find_element_by_xpath(
+                                        "//*[contains(@class, 'J_ReplyMoreBtn reply-moreBtn')]")
+                                    reply_more_btn.click()
+                                    time.sleep(1)
+                                except Exception as err:
+                                    print(err)
+
+                            # comment-noMore 更多评论
                             if browser.page_source.__str__().__contains__("comment-noMore"):
                                 comment = browser.find_element_by_xpath("//*[contains(@class, 'comment-noMore')]")
                             else:
                                 comment = browser.find_element_by_xpath("//*[contains(@class, 'comment-moreBtn')]")
+
                             comment_text = comment.text
                             time.sleep(2)
                             comment.click()
