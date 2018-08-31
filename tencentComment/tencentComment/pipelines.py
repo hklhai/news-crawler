@@ -5,7 +5,6 @@
 # Don't forget to add your pipeline to the ITEM_PIPELINES setting
 # See: https://doc.scrapy.org/en/latest/topics/item-pipeline.html
 
-import codecs
 import json
 
 import pymysql
@@ -13,7 +12,6 @@ from elasticsearch import Elasticsearch
 from twisted.enterprise import adbapi
 
 from tencentComment.utils.global_list import COMMENT_INDEX, COMMENT_TYPE
-from tencentComment.utils.common import get_now_date, get_comment_file_system_path
 from tencentComment.utils.global_list import HOST_PORT
 
 
@@ -38,13 +36,9 @@ class JsonWithEncodingPipeline(object):
         # lines = json.dumps(dict(item), ensure_ascii=False) + "\n"
         # self.file.write(lines)
 
+        # for x in range(len(item)):
         body = json.dumps(dict(item), ensure_ascii=False)
-        list = json.loads(body)['content'].split('|')
-        for i in range(len(list)):
-            if list[i] != "":
-                comment = json.loads(body)
-                comment['content'] = list[i].strip()
-                self.es.index(index=COMMENT_INDEX, doc_type=COMMENT_TYPE, body=comment, id=None)
+        self.es.index(index=COMMENT_INDEX, doc_type=COMMENT_TYPE, body=body, id=None)
         return item
 
     def spider_closed(self, spider):

@@ -205,19 +205,19 @@ def get_pre_week_url_list():
     读取文件并解析为列表
     :return: url列表
     """
-    # pre_week = get_pre_week()
-    # json_file = get_file_system_path() + pre_week
-    # dic_list = [json.loads(line)["url"] for line in open(json_file)]
-    # return dic_list
+    pre_week = get_pre_week()
+    json_file = get_file_system_path() + pre_week
+    dic_list = [json.loads(line)["url"] for line in open(json_file)]
+    return dic_list
 
     # 爬取2018-08-20至2018-08-27数据
-    date_list = get_pre_date_list("2018-08-20", "2018-08-28")
-    for i in range(len(date_list)):
-        print(date_list[i])
-    dic_list = []
-    for i in range(len(date_list)):
-        json_file = get_file_system_path() + date_list[i]
-        list_per_day = [json.loads(line)["url"] for line in open(json_file)]
-        print(len(list_per_day))
-        dic_list.extend(list_per_day)
-    return dic_list
+    # date_list = get_pre_date_list("2018-08-20", "2018-08-28")
+    # for i in range(len(date_list)):
+    #     print(date_list[i])
+    # dic_list = []
+    # for i in range(len(date_list)):
+    #     json_file = get_file_system_path() + date_list[i]
+    #     list_per_day = [json.loads(line)["url"] for line in open(json_file)]
+    #     print(len(list_per_day))
+    #     dic_list.extend(list_per_day)
+    # return dic_list

@@ -11,4 +11,4 @@ class TencentCommentItem(scrapy.Item):
     title = scrapy.Field()          # 新闻标题
     create_date = scrapy.Field()    # 爬取时间
     content = scrapy.Field()        # 新闻评论内容
-
+    vote_number = scrapy.Field()    # 评论数

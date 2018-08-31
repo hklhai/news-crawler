@@ -4,9 +4,10 @@ import random
 import time
 
 import scrapy
+from bs4 import BeautifulSoup
 from selenium import webdriver
 
-from tencentComment.utils.common import get_chrome_executable_path, debug_option
+from tencentComment.utils.common import get_chrome_executable_path, debug_option, get_now_time
 from tencentComment.utils.global_list import *
 from tencentComment.utils.global_list import NO_COMMENT
 
@@ -18,7 +19,7 @@ class TencentcommentSpider(scrapy.Spider):
 
     def parse(self, response):
         browser = webdriver.Chrome(executable_path=get_chrome_executable_path(), chrome_options=debug_option())
-        browser.get("https://new.qq.com/omn/20180810/20180810A065JA.html")
+        browser.get("https://new.qq.com/omn/20180831/20180831A08F17.html")
         sleep_time = random.uniform(2, 3)
         time.sleep(sleep_time)
         title = browser.find_elements_by_tag_name("h1")[0].text
@@ -63,6 +64,59 @@ class TencentcommentSpider(scrapy.Spider):
 
                         comment_text = comment.text
                         time.sleep(2)
-                        comment.click()
+                        try:
+                            comment.click()
+                        except Exception as err:
+                            print(err)
                         time.sleep(5)
-        print(browser.page_source)
+        # print(browser.page_source)
+        soup = BeautifulSoup(browser.page_source, "html.parser")
+
+        create_date = get_now_time()
+        content = ""
+
+        if len(soup.select("title")) != 0:
+            title = response.url
+
+            soup.select("#J_CommentTotal")
+            if len(soup.select("#J_ShortComment .comment")) > 0:
+                comment_block = soup.select("#J_ShortComment .comment .comment-block")
+                for x in range(len(comment_block)):
+                    """
+                    soup.select("#J_ShortComment .comment .comment-block")[0].select("div")[0].text
+
+                    soup.select("#J_ShortComment .comment .comment-block")
+                    [0].select(".comment-operate")[0].select("span > i")[0]
+                    [116].select(".comment-operate")[0].select("span > i")[0]
+                    """
+                    comment_text = comment_block[x].select("div")[0].text
+                    comment_vote = comment_block[x].select(".comment-operate")[0].select("span > i")[0]
+                    print(comment_text + " " + str(vote_num(str(comment_vote))))
+
+                    """
+                    soup.select("#J_ShortComment .comment .comment-block .reply-block")[0]
+                    .select(".reply-content")[0].text
+
+                    soup.select("#J_ShortComment .comment .comment-block .reply-block")
+                    [0].select("div")[1].select("span > i")
+                    [5].select("div")  size = 0   评论数据为0
+                    """
+                    reply_block = comment_block[x].select(".reply-block")
+                    for y in range(len(reply_block)):
+                        reply_text = reply_block[y].select(".reply-content")[0].text.split("  :  ")[1]
+                        vote_list = reply_block[y].select("div")
+                        if len(vote_list) == 2:
+                            reply_vote = str(vote_list[1].select("span > i")[0])
+                            reply_vote = vote_num(reply_vote)
+                        else:
+                            reply_vote = 0
+                        print("    " + reply_text + " " + str(reply_vote))
+
+
+def vote_num(str):
+    str = str.replace("<i>", "").replace("</i>", "")
+    if len(str) == 0:
+        str = 0
+    else:
+        str = int(str)
+    return str

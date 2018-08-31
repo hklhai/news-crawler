@@ -119,9 +119,13 @@ class TencentcommentDownloaderMiddleware(object):
 
                             comment_text = comment.text
                             time.sleep(2)
-                            comment.click()
+                            try:
+                                comment.click()
+                            except Exception as err:
+                                print(err)
                             time.sleep(5)
-        return HtmlResponse(url=title, body=browser.page_source, encoding="utf-8", request=request)
+
+            return HtmlResponse(url=title, body=browser.page_source, encoding="utf-8", request=request)
 
     def process_response(self, request, response, spider):
         # Called with the response returned from the downloader.
