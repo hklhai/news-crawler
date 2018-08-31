@@ -48,6 +48,13 @@ class CnbianjuSpider(scrapy.Spider):
                     x = td.findAll("a")
                     if len(x) > 0 and x[0]['href'].startswith('/Art'):
                         url = PRODUCT_URL_START + x[0]['href'] + PRODUCT_URL_END
+
+                        # 如果存在url不做yield
+                        es = Elasticsearch([HOST_PORT])
+                        query_total = {'query': {'match_phrase': {'url_object_id': get_md5(url)}}}
+                        total = es.count(index=SCRIPT_INDEX, doc_type=SCRIPT_TYPE, body=query_total)
+                        if total['count'] > 0:
+                            continue
                         print(url)
                         yield Request(url=url, callback=self.parse_detail)
         browser.close()
@@ -59,11 +66,6 @@ class CnbianjuSpider(scrapy.Spider):
         :param response: 内容页面返回信息
         :return: 待持久化item
         """
-        # es = Elasticsearch([HOST_PORT])
-        # query_total = {'query': {'match_phrase': {'url_object_id': get_md5(response.url)}}}
-        # total = es.count(index=SCRIPT_INDEX, doc_type=SCRIPT_TYPE, body=query_total)
-        # if total['count'] > 0:
-        #     return None
 
         browser = webdriver.Chrome(executable_path=get_chrome_executable_path(), chrome_options=chrome_option())
         browser.get(LOGIN_PAGE)
