@@ -32,7 +32,12 @@ class CnbianjuSpider(scrapy.Spider):
         soup = BeautifulSoup(browser.page_source, "html.parser")
 
         # 翻页操作 获取是否存在下一页，存在就翻页，再调用get_page_url_list
-        total_page = int(soup.select(".MainTableBorder")[5].findAll('tr')[45].select('font')[2].text)
+
+        tr_len = len(soup.select(".MainTableBorder")[5].findAll('tr'))
+        if tr_len >= 45:
+            total_page = int(soup.select(".MainTableBorder")[5].findAll('tr')[45].select('font')[2].text)
+        else:
+            total_page = int(soup.select(".MainTableBorder")[6].findAll('tr')[45].select('font')[2].text)
 
         for i in range(1, total_page + 1):
             # for i in range(1, 2):
