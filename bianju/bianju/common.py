@@ -10,12 +10,38 @@ from urllib import parse
 
 from selenium import webdriver
 
+# 电视剧剧本-青春
 # YOUTH_PAGE = "https://www.bianju.me/telescript/?ClassName2=%C7%E0%B4%BA"
 # PAGE_URL_END = "&ClassName=%B5%E7%CA%D3%BE%E7%BE%E7%B1%BE&ClassName2=%C7%E0%B4%BA&byType="
 
+# 电视剧剧本
+# YOUTH_PAGE = "https://www.bianju.me/telescript/"
+# PAGE_URL_END = "&ClassName=%B5%E7%CA%D3%BE%E7%BE%E7%B1%BE&ClassName2=&byType="
 
-YOUTH_PAGE = "https://www.bianju.me/telescript/"
-PAGE_URL_END = "&ClassName=%B5%E7%CA%D3%BE%E7%BE%E7%B1%BE&ClassName2=&byType="
+# 电影剧本
+YOUTH_PAGE = "https://www.bianju.me/screenplay/"
+PAGE_URL_END = "&ClassName=%B5%E7%D3%B0%BE%E7%B1%BE&ClassName2=&byType="
+
+# 网络大电影剧本
+# YOUTH_PAGE = "https://www.bianju.me/NetScreenplay/"
+# PAGE_URL_END = "&ClassName=%CD%F8%C2%E7%B4%F3%B5%E7%D3%B0%BE%E7%B1%BE&ClassName2=&byType="
+
+# 网剧剧本
+# YOUTH_PAGE = "https://www.bianju.me/NetTelescript/"
+# PAGE_URL_END = "&ClassName=%CD%F8%C2%E7%BE%E7%BE%E7%B1%BE&ClassName2=&byType="
+
+# 微电影剧本
+# YOUTH_PAGE = "https://www.bianju.me/MicroFilm/"
+# PAGE_URL_END ="&ClassName=%CE%A2%B5%E7%D3%B0%BE%E7%B1%BE&ClassName2=&byType="
+
+# 小说
+# YOUTH_PAGE = "https://www.bianju.me/novel/"
+# PAGE_URL_END ="&ClassName=С˵&ClassName2=&byType="
+
+# 其它
+# YOUTH_PAGE = "https://www.bianju.me/other/"
+# PAGE_URL_END ="&ClassName=%C6%E4%CB%FB&ClassName2=&byType="
+
 
 PAGE_URL_START = "https://www.bianju.me/telescript/?Page="
 PRODUCT_URL_START = "http://www.bianju.me/"
@@ -32,8 +58,10 @@ HOST_PORT = 'ubuntu3:9200'
 # ElasticSearch index
 # SCRIPT_INDEX = "script_data"
 # SCRIPT_TYPE = "script"
-SCRIPT_INDEX = "telescript_data"
-SCRIPT_TYPE = "telescript"
+# SCRIPT_INDEX = "telescript_data"
+# SCRIPT_TYPE = "telescript"
+SCRIPT_INDEX = "screenplay_data"
+SCRIPT_TYPE = "screenplay"
 
 
 def get_url_product_id(url):

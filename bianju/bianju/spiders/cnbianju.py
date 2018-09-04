@@ -159,7 +159,7 @@ class CnbianjuSpider(scrapy.Spider):
         bianju_item["submission_time"] = submission_time
         bianju_item["modify_time"] = modify_time
         bianju_item["read_times"] = read_times
-        bianju_item['content'] = content
         bianju_item['category'] = category
+        bianju_item['content'] = content
         browser.close()
         return bianju_item
