@@ -10,9 +10,14 @@ from urllib import parse
 
 from selenium import webdriver
 
-YOUTH_PAGE = "https://www.bianju.me/telescript/?ClassName2=%C7%E0%B4%BA"
+# YOUTH_PAGE = "https://www.bianju.me/telescript/?ClassName2=%C7%E0%B4%BA"
+# PAGE_URL_END = "&ClassName=%B5%E7%CA%D3%BE%E7%BE%E7%B1%BE&ClassName2=%C7%E0%B4%BA&byType="
+
+
+YOUTH_PAGE = "https://www.bianju.me/telescript/"
+PAGE_URL_END = "&ClassName=%B5%E7%CA%D3%BE%E7%BE%E7%B1%BE&ClassName2=&byType="
+
 PAGE_URL_START = "https://www.bianju.me/telescript/?Page="
-PAGE_URL_END = "&ClassName=%B5%E7%CA%D3%BE%E7%BE%E7%B1%BE&ClassName2=%C7%E0%B4%BA&byType="
 PRODUCT_URL_START = "http://www.bianju.me/"
 PRODUCT_URL_END = "&CType=content"
 
@@ -25,8 +30,10 @@ LOGIN_PAGE = "https://www.bianju.me/user_login.asp"
 HOST_PORT = 'ubuntu3:9200'
 
 # ElasticSearch index
-SCRIPT_INDEX = "script_data"
-SCRIPT_TYPE = "script"
+# SCRIPT_INDEX = "script_data"
+# SCRIPT_TYPE = "script"
+SCRIPT_INDEX = "telescript_data"
+SCRIPT_TYPE = "telescript"
 
 
 def get_url_product_id(url):
