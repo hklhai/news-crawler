@@ -29,19 +29,27 @@ class JsonWithEncodingPipeline(object):
         """
         不保存至本地文件系统，仅保存至ElasticSearch
         """
-        item_dict = dict(item)
-        # 查询是否存在该
-        query_total = {"query": {"match_phrase": {"url_object_id": item_dict['url_object_id']}}}
-        total = self.es.count(index=SCRIPT_INDEX, doc_type=SCRIPT_TYPE, body=query_total)
-        if total['count'] == 0:
-            # lines = json.dumps(dict(item), ensure_ascii=False) + "\n"
-            # self.file.write(lines)
+        # item_dict = dict(item)
+        # # 查询是否存在该作品，
+        # query_total = {"query": {"match_phrase": {"url_object_id": item_dict['url_object_id']}}}
+        # total = self.es.count(index=SCRIPT_INDEX, doc_type=SCRIPT_TYPE, body=query_total)
+        # if total['count'] == 0:
+        #     # lines = json.dumps(dict(item), ensure_ascii=False) + "\n"
+        #     # self.file.write(lines)
+        #
+        #     body = json.dumps(dict(item), ensure_ascii=False)
+        #     self.es.index(index=SCRIPT_INDEX, doc_type=SCRIPT_TYPE, body=body, id=None)
+        #     print("persisted： " + item_dict['title'])
+        #     return item
+        # else:
+        #     return None
 
-            body = json.dumps(dict(item), ensure_ascii=False)
-            self.es.index(index=SCRIPT_INDEX, doc_type=SCRIPT_TYPE, body=body, id=None)
-            return item
-        else:
-            return None
+        # 查询是否存在该作品，移至parse中
+        item_dict = dict(item)
+        body = json.dumps(dict(item), ensure_ascii=False)
+        self.es.index(index=SCRIPT_INDEX, doc_type=SCRIPT_TYPE, body=body, id=None)
+        print("persisted： " + item_dict['title'])
+        return item
 
     def spider_closed(self, spider):
         self.file.close()

@@ -17,16 +17,18 @@ from selenium import webdriver
 # SCRIPT_TYPE = "script"
 
 # 电视剧剧本
-YOUTH_PAGE = "https://www.bianju.me/telescript/"
-PAGE_URL_END = "&ClassName=%B5%E7%CA%D3%BE%E7%BE%E7%B1%BE&ClassName2=&byType="
-SCRIPT_INDEX = "telescript_data"
-SCRIPT_TYPE = "telescript"
+# YOUTH_PAGE = "https://www.bianju.me/telescript/"
+# PAGE_URL_END = "&ClassName=%B5%E7%CA%D3%BE%E7%BE%E7%B1%BE&ClassName2=&byType="
+# SCRIPT_INDEX = "telescript_data"
+# SCRIPT_TYPE = "telescript"
+# PAGE_URL_START = "https://www.bianju.me/telescript/?Page="
 
 # 电影剧本
-# YOUTH_PAGE = "https://www.bianju.me/screenplay/"
-# PAGE_URL_END = "&ClassName=%B5%E7%D3%B0%BE%E7%B1%BE&ClassName2=&byType="
-# SCRIPT_INDEX = "screenplay_data"
-# SCRIPT_TYPE = "screenplay"
+YOUTH_PAGE = "https://www.bianju.me/screenplay/"
+PAGE_URL_END = "&ClassName=%B5%E7%D3%B0%BE%E7%B1%BE&ClassName2=&byType="
+SCRIPT_INDEX = "screenplay_data"
+SCRIPT_TYPE = "screenplay"
+PAGE_URL_START = YOUTH_PAGE + "?Page="
 
 # 网络大电影剧本
 # YOUTH_PAGE = "https://www.bianju.me/NetScreenplay/"
@@ -49,7 +51,6 @@ SCRIPT_TYPE = "telescript"
 # PAGE_URL_END ="&ClassName=%C6%E4%CB%FB&ClassName2=&byType="
 
 
-PAGE_URL_START = "https://www.bianju.me/telescript/?Page="
 PRODUCT_URL_START = "http://www.bianju.me"
 PRODUCT_URL_END = "&CType=content"
 
