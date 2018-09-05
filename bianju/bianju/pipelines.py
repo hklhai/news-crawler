@@ -31,7 +31,7 @@ class JsonWithEncodingPipeline(object):
         """
         item_dict = dict(item)
         # 查询是否存在该
-        query_total = {'query': {'match_phrase': {'url_object_id': item_dict['url_object_id']}}}
+        query_total = {"query": {"match_phrase": {"url_object_id": item_dict['url_object_id']}}}
         total = self.es.count(index=SCRIPT_INDEX, doc_type=SCRIPT_TYPE, body=query_total)
         if total['count'] == 0:
             # lines = json.dumps(dict(item), ensure_ascii=False) + "\n"

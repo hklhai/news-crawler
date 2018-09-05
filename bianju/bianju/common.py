@@ -13,14 +13,20 @@ from selenium import webdriver
 # 电视剧剧本-青春
 # YOUTH_PAGE = "https://www.bianju.me/telescript/?ClassName2=%C7%E0%B4%BA"
 # PAGE_URL_END = "&ClassName=%B5%E7%CA%D3%BE%E7%BE%E7%B1%BE&ClassName2=%C7%E0%B4%BA&byType="
+# SCRIPT_INDEX = "script_data"
+# SCRIPT_TYPE = "script"
 
 # 电视剧剧本
-# YOUTH_PAGE = "https://www.bianju.me/telescript/"
-# PAGE_URL_END = "&ClassName=%B5%E7%CA%D3%BE%E7%BE%E7%B1%BE&ClassName2=&byType="
+YOUTH_PAGE = "https://www.bianju.me/telescript/"
+PAGE_URL_END = "&ClassName=%B5%E7%CA%D3%BE%E7%BE%E7%B1%BE&ClassName2=&byType="
+SCRIPT_INDEX = "telescript_data"
+SCRIPT_TYPE = "telescript"
 
 # 电影剧本
-YOUTH_PAGE = "https://www.bianju.me/screenplay/"
-PAGE_URL_END = "&ClassName=%B5%E7%D3%B0%BE%E7%B1%BE&ClassName2=&byType="
+# YOUTH_PAGE = "https://www.bianju.me/screenplay/"
+# PAGE_URL_END = "&ClassName=%B5%E7%D3%B0%BE%E7%B1%BE&ClassName2=&byType="
+# SCRIPT_INDEX = "screenplay_data"
+# SCRIPT_TYPE = "screenplay"
 
 # 网络大电影剧本
 # YOUTH_PAGE = "https://www.bianju.me/NetScreenplay/"
@@ -44,24 +50,16 @@ PAGE_URL_END = "&ClassName=%B5%E7%D3%B0%BE%E7%B1%BE&ClassName2=&byType="
 
 
 PAGE_URL_START = "https://www.bianju.me/telescript/?Page="
-PRODUCT_URL_START = "http://www.bianju.me/"
+PRODUCT_URL_START = "http://www.bianju.me"
 PRODUCT_URL_END = "&CType=content"
 
-SPIDER_NAME = "cnbianjuTest"
+SPIDER_NAME = "cnbianju"
 
 LOGIN_PAGE = "https://www.bianju.me/user_login.asp"
 
 # ElasticSearch
 # HOST_PORT = 'spark3:9200'
 HOST_PORT = 'ubuntu3:9200'
-
-# ElasticSearch index
-# SCRIPT_INDEX = "script_data"
-# SCRIPT_TYPE = "script"
-# SCRIPT_INDEX = "telescript_data"
-# SCRIPT_TYPE = "telescript"
-SCRIPT_INDEX = "screenplay_data"
-SCRIPT_TYPE = "screenplay"
 
 
 def get_url_product_id(url):
@@ -274,3 +272,16 @@ def get_pre_week_url_list():
     json_file = get_file_system_path() + pre_week
     dic_list = [json.loads(line)["url"] for line in open(json_file)]
     return dic_list
+
+
+def convert_url(url):
+    """
+    将http转换成https
+    :param url:
+    :return:
+    """
+    if url.startswith("http:") and not url.startswith("https:"):
+        url = url.replace("http", "https")
+        return url
+    else:
+        return url

@@ -56,7 +56,8 @@ class CnbianjuSpider(scrapy.Spider):
 
                         # 如果存在url不做yield
                         es = Elasticsearch([HOST_PORT])
-                        query_total = {'query': {'match_phrase': {'url_object_id': get_md5(url)}}}
+                        url_md5 = get_md5(convert_url(url))
+                        query_total = {"query": {"match": {"url_object_id": url_md5}}}
                         total = es.count(index=SCRIPT_INDEX, doc_type=SCRIPT_TYPE, body=query_total)
                         if total['count'] > 0:
                             continue
@@ -93,7 +94,11 @@ class CnbianjuSpider(scrapy.Spider):
                 total_page_url = a_list[j]['href']
                 break
 
-        total_page = int(get_url_product_page(total_page_url))
+        # 解决可能出现页数为 1 的情况
+        if "" == total_page_url:
+            total_page = 1
+        else:
+            total_page = int(get_url_product_page(total_page_url))
 
         title = soup.select(".title")[0].text
         print(title)
@@ -144,11 +149,11 @@ class CnbianjuSpider(scrapy.Spider):
                 break
             content += content_page
 
-        print(content)
-        print("======================")
+        # print(content)
+        print("=========本作品爬取结束=============")
 
         create_date = get_now_time()
-        url_object_id = get_md5(response.url)
+        url_object_id = get_md5(convert_url(response.url))
 
         bianju_item = BianjuItem()
         bianju_item["title"] = title
