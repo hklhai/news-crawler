@@ -23,16 +23,20 @@ from selenium import webdriver
 # SCRIPT_TYPE = "telescript"
 # PAGE_URL_START = "https://www.bianju.me/telescript/?Page="
 
-# 电影剧本
-YOUTH_PAGE = "https://www.bianju.me/screenplay/"
-PAGE_URL_END = "&ClassName=%B5%E7%D3%B0%BE%E7%B1%BE&ClassName2=&byType="
-SCRIPT_INDEX = "screenplay_data"
-SCRIPT_TYPE = "screenplay"
-PAGE_URL_START = YOUTH_PAGE + "?Page="
+# # 电影剧本
+# SCRIPT_TYPE = "screenplay"
+# YOUTH_PAGE = "https://www.bianju.me/" + SCRIPT_TYPE + "/"
+# PAGE_URL_END = "&ClassName=%B5%E7%D3%B0%BE%E7%B1%BE&ClassName2=&byType="
+# SCRIPT_INDEX = SCRIPT_TYPE + "_data"
+# PAGE_URL_START = YOUTH_PAGE + "?Page="
 
 # 网络大电影剧本
-# YOUTH_PAGE = "https://www.bianju.me/NetScreenplay/"
-# PAGE_URL_END = "&ClassName=%CD%F8%C2%E7%B4%F3%B5%E7%D3%B0%BE%E7%B1%BE&ClassName2=&byType="
+NETSCREENPLAY = "NetScreenplay"
+YOUTH_PAGE = "https://www.bianju.me/" + NETSCREENPLAY + "/"
+PAGE_URL_START = YOUTH_PAGE + "?Page="
+PAGE_URL_END = "&ClassName=%CD%F8%C2%E7%B4%F3%B5%E7%D3%B0%BE%E7%B1%BE&ClassName2=&byType="
+SCRIPT_INDEX = "netscreenplay_data"
+SCRIPT_TYPE = "netscreenplay"
 
 # 网剧剧本
 # YOUTH_PAGE = "https://www.bianju.me/NetTelescript/"
