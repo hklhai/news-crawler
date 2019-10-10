@@ -1,10 +1,6 @@
 # -*- coding: utf-8 -*-
 
-import time
-
-from selenium import webdriver
-
-from common import get_chrome_executable_path, chrome_option
+from tencent.utils.common import *
 
 for i in range(6):
     browser = webdriver.Chrome(executable_path=get_chrome_executable_path(), chrome_options=chrome_option())
