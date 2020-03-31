@@ -15,6 +15,7 @@ wheel = "*"
 elasticsearch = "*"
 setuptools = "*"
 cryptography = "==2.3"
+xlrd = "*"
 
 [dev-packages]
 
