@@ -6,17 +6,12 @@ import pymysql
 from elasticsearch import Elasticsearch
 from twisted.enterprise import adbapi
 
-from tencent.utils.common import get_file_system_path, get_now_date, get_comment_file_system_path
+from tencent.utils.common import get_file_system_path, get_now_date
 from tencent.utils.global_list import NEWS_INDEX, NEWS_TYPE, HOST_PORT
 
 
 class TencentPipeline(object):
-    def __init__(self):
-        self.file = codecs.open(get_comment_file_system_path() + get_now_date(), 'w', encoding="utf-8")
-
     def process_item(self, item, spider):
-        lines = json.dumps(dict(item), ensure_ascii=False) + "\n"
-        self.file.write(lines)
         return item
 
 

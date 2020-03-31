@@ -6,7 +6,7 @@ from scrapy.http import HtmlResponse
 
 from netEase.music.common import *
 
-url = "https://music.163.com/#/discover/toplist?id=3778678"
+url = "https://music.163.com/#/artist?id=7763"
 path = "E://music//"
 
 browser = webdriver.Chrome(executable_path=get_chrome_executable_path(), chrome_options=chrome_option())
@@ -37,12 +37,8 @@ for e in soup.select("tbody .tt"):
         title = e.select("a")[1].select("b")[0]["title"]
         href = e.select("a")[1]["href"]
     else:
-        if len(e.select("a")[0].select("b")) >= 1:
-            title = e.select("a")[0].select("b")[0]["title"]
-        else:
-            title = e.select("a")[1].select("b")[0]["title"]
+        title = e.select("a")[0].select("b")[0]["title"]
         href = e.select("a")[0]["href"]
-
     i += 1
     num = str(href).split("=")[1]
     down_href = "http://music.163.com/song/media/outer/url?id=" + num + ".mp3"
@@ -55,5 +51,5 @@ for m in range(0, len(name_url_list)):
     print(str(m).zfill(3) + ":" + name_url_list[m][1])
 
     name = '{}.mp3'.format(str(m + 1).zfill(3) + name_url_list[m][0]).replace("/", "").replace(":", "")
-    name = path + name
+    name = path + name;
     urllib.request.urlretrieve(name_url_list[m][1], name)

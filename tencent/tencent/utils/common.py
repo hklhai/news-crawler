@@ -95,7 +95,7 @@ def chrome_option():
     global options
     options = webdriver.ChromeOptions()
     # 设置为无界面浏览器
-    # options.headless = True
+    options.headless = True
     options.add_argument(get_user_agent())
     return options
 
