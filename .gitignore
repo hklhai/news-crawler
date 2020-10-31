@@ -7,3 +7,4 @@ reminder/dist
 *.egg-info
 /dist/*
 /build/*
+*.mp3
